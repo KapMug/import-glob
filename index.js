@@ -18,11 +18,12 @@ module.exports = function(source) {
       })
       .map(function(file, index) {
         var fileName = quote + file + quote;
+        var basename = path.normalize(file);
         if (match.match(importSass)) {
           return '@import ' + fileName;
         } else if (match.match(importModules)) {
           var moduleName = obj + index;
-          modules.push(moduleName);
+          modules.push(quote + basename + quote + ': ' + moduleName);
           withModules = true;
           return 'import * as ' + moduleName + ' from ' + fileName;
         } else if (match.match(importFiles)) {
@@ -31,7 +32,7 @@ module.exports = function(source) {
       })
       .join('; ');
     if (result && withModules) {
-      result += '; let ' + obj + ' = [' + modules.join(', ') + ']';
+      result += '; let ' + obj + ' = {' + modules.join(', ') + '}';
     }
     return result;
   }

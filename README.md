@@ -15,7 +15,7 @@ import * as module0 from "./foo/1.js";
 import * as module1 from "./foo/bar/2.js";
 import * as module2 from "./foo/bar/3.js";
 
-modules = [module0, module1, module2]
+modules = { 'foo/1.js': module0, 'foo/bar/2.js': module1, 'foo/bar/3.js': module2 }
 ```
 ---
 __For side effects:__
@@ -53,16 +53,13 @@ You can use it one of two ways, the recommended way is to use it as a preloader
 ```js
 {
   module: {
-    preloaders: [{
-      test: /\.js/,
-      loader: 'import-glob'
-    },
-    {
-      test: /\.scss/,
-      loader: 'import-glob'
-    }
-    ]
-  }
+    rules: [
+      {
+        test: /\.js/,
+        use: [{ loader: 'import-glob' }],
+      },
+    ],
+  },
 }
 ```
 
